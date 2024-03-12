@@ -1,12 +1,18 @@
 body {
     box-sizing: border-box;
-    background-color: white;
+    background-color: #faedcd;
     margin: 0;
     padding: 0;
     font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
       "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
     
   } 
+
+  h1{
+    text-align: center;
+    color: rgb(92, 26, 26);
+    font-size: 200%;
+  }
  ul li {
     float: left;
     display: flow-root;
@@ -35,11 +41,13 @@ body {
   }
 
   .form{
-    background-color: rgb(224, 249, 249);
-    width: 600px;
-     border-radius: 10px;
-     padding: 20px 40px;
-     box-shadow: 0 10px 25px rgba(92, 99, 105, .2);
+    width: 300px;
+    margin: 0 auto;
+    background-color: #ccd5ae;
+    padding: 100px ;
+    border-radius: 5px;
+    box-shadow: 0px 20px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 350px;
   }
   .contain {
     position: relative;
@@ -70,8 +78,8 @@ body {
     top: 15px;
     left: 15px;
     padding: 0 4px;
-    background-color:rgb(224, 249, 249);
-    color: #b5cbf8;
+    background-color:#fefae0;
+    color: #bc6c25;
     font-size: 16px;
     transition: 1s;
   }
@@ -80,7 +88,7 @@ body {
     margin-left: auto;
     padding: 15px 30px;
     border: none;
-    background-color: purple;
+    background-color: #bc6c25;
     color: white;
     border-radius: 6px;
     cursor: pointer;
@@ -89,7 +97,7 @@ body {
   }
   
   .submitBtn:hover {
-    background-color: #9867C5;
+    background-color: #bc6c25;
     transform: translateY(-5px);
   }
   .input:focus + .select{
@@ -98,8 +106,8 @@ body {
     z-index: 10;
     font-size: 14px;
     font-weight: 600;
-    color: purple;
+    color: #bc6c25;
   }
   .input:focus {
-    border: 2px solid purple;
+    border: 2px solid #bc6c25;
   }
