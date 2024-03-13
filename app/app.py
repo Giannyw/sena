@@ -21,16 +21,17 @@ def encriptarpassword (passwordencrip):
     # encriptar= bcrypt.hashpw(Passwordencrip.encode('utf-8'), bcrypt.gestsalt())
     encriptar = generate_password_hash(passwordencrip)
     valor= check_password_hash(encriptar, passwordencrip)
-    return "Encriptado: {0} | coincide:{1}".format(encriptar, valor)
+   # return "Encriptado: {0} | coincide:{1}".format(encriptar, valor)
+    return valor
 
 
-@app.route('/')  # Crear ruta
+@app.route('/lista')  # Crear ruta
 def lista():
     cursor = db.cursor()
-    cursor.execute("SELECT* FROM personas")
+    cursor.execute("SELECT * FROM personas")
     usuario = cursor.fetchall()
        
-    return render_template('index.html',usuario=usuario)
+    return render_template('index.html', usuario=usuario)
 
 @app.route('/Registrar', methods=['GET', 'POST'])
 def registrar_usuario():
@@ -43,17 +44,17 @@ def registrar_usuario():
        Usuario = request.form.get('usuario')
        Password = request.form.get('password')
        
-       Passwordencrip= encriptarpassword(Password)
+       Passwordencrip= generate_password_hash(Password)
     
         # Insertar datos a la tabla de mysql
        cursor.execute("INSERT INTO personas(nombrep, apellidop, emailp, dirp, telp, usup, passp) VALUES (%s, %s, %s, %s, %s, %s, %s)", (Nombres, Apellidos, email, Direccion, Telefono, Usuario, Passwordencrip))
        db.commit()
 
             
-       return redirect(url_for('registrar_usuario'))  # Redirigir a la página principal
+       return redirect(url_for('login'))  # Redirigir a la página principal
     return render_template("Registrar.html")
 
-@app.route('/Ingresar', methods=['GET','POST']) 
+@app.route('/Ingresar', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
         #VERIFICAR LAS CREDENCIALES DEL USUARIO
@@ -64,15 +65,27 @@ def login():
         cursor.execute("SELECT usup, passp from personas WHERE usup= %s", (username,))
         resultado = cursor.fetchone()
         
-        if resultado in encriptarpassword(password) == resultado [1]:
-            session['username'] = username
-            return redirect(url_for('lista'))
+        if resultado: 
+            if check_password_hash(resultado[1], password): 
+                session['usuario'] = username
+                return redirect(url_for('lista'))
+            else:
+                error = 'Credenciales invalidas. Por favor intente de nuevo'
+                return render_template('Ingresar.html', error=error)
         else:
-            error = 'Credenciales invalidas. Por favor intente de nuevo'
-            return redirect('Ingresar.html', error=error)
+            error = 'Usuario no encontrado'
+            return render_template('Ingresar.html', error=error)
     return render_template('Ingresar.html')
+
+@app.route('/logout')
+def logout():
+    #eliminar el usuario de la sesion
+    session.pop('usuario',None)
+    print("Sesion Finalizada")
+    return redirect(url_for('login'))
+
         
-@app.route('/editar/<int:id>',methods=['GET', 'POST'])
+@app.route('/Editar/<int:id>',methods=['GET', 'POST'])
 def editar_usuario(id):
     cursor = db.cursor()
     if request.method == 'POST':

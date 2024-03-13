@@ -10,36 +10,19 @@ body {
 
   h1{
     text-align: center;
-    color: rgb(92, 26, 26);
+    color: #bc6c25;
     font-size: 200%;
   }
- ul li {
-    float: left;
-    display: flow-root;
-    font-family: Arial, Helvetica, sans-serif;
-    padding: 10px;
+ 
+  .form-name {
+    width: 100px;
+    margin: 0 auto;
+    background-color: #ccd5ae;
+    padding: 40px;
+    border-radius: 5px;
+    box-shadow: 0px 20px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
   }
-  div a {
-    text-decoration: none;
-    color: beige;
-    font-weight: bold;
-  }
-  div ul {
-    list-style: none;
-    overflow: hidden;
-    text-align: center;
-  }
-  div ul li:hover {
-    background: rgb(156, 96, 39);
-    border-radius: 7%;
-  }
-  .name {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 700px;
-  }
-
   .form{
     width: 300px;
     margin: 0 auto;
@@ -47,13 +30,15 @@ body {
     padding: 100px ;
     border-radius: 5px;
     box-shadow: 0px 20px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 350px;
+    margin-top: 150px;
   }
+ 
   .contain {
     position: relative;
     height: 40px;
     width: 90%;
     margin-bottom: 20px;
+    
   }
   .input{
     position: absolute;
@@ -61,7 +46,7 @@ body {
     left: 0px;
     height: 100%;
     width: 100%;
-    border: 1px solid #DADCE0;
+    border: 2px solid #bc6c25;
     border-radius: 7px;
     font-size: 16px;
     padding: 0 20px;
@@ -69,6 +54,8 @@ body {
     background: none;
     z-index: 1;
   }
+
+  
   ::placeholder {
     color: transparent;
   }
@@ -78,8 +65,8 @@ body {
     top: 15px;
     left: 15px;
     padding: 0 4px;
-    background-color:#fefae0;
-    color: #bc6c25;
+    
+    color: #ccd5a;
     font-size: 16px;
     transition: 1s;
   }
@@ -97,15 +84,11 @@ body {
   }
   
   .submitBtn:hover {
-    background-color: #bc6c25;
+    background-color: #ccd5a;
     transform: translateY(-5px);
   }
   .input:focus + .select{
-    top: -7px;
-    left: 3px;
-    z-index: 10;
-    font-size: 14px;
-    font-weight: 600;
+    outline: none;
     color: #bc6c25;
   }
   .input:focus {

@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" href='{{ url_for('static',filename='css/styleeditar.css')}}'>
+    <link rel="stylesheet" href="/app/stactic/css/styleeditar.css">
     <title>Document</title>
 </head>
 <body>
    <h1>Editar personas</h1>
+   <div class="form-group">
    <form method="POST" action="">
     <label>Codigo:</label>
     <input type="number" name="polper" value="{{personas[0]}}" disabled> <br>
@@ -33,5 +36,6 @@
     <input type="password" name="passper" value="{{personas[7]}}"> <br>
     <input type="submit" value="Guardar cambios">
 </form>
+</div>
 </body>
 </html>
