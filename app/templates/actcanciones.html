@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/actcanciones.css')}}">
+    <title>Actualizacion canciones</title>
+</head>
+<body>
+<h1>Canciones</h1>
+        
+        <form class="act">
+
+            <fieldset>
+              <label for="id_canciones">ID:</label>
+              <input type="text" id="id_canciones" name="id_canciones" required />
+              <label for="titulo">Título:</label>
+              <input type="text" id="titulo" name="titulo" required />
+              <label for="artista">Artista:</label>
+              <input type="text" id="artista" name="artista" required />
+              <label for="genero">Genero:</label>
+              <input type="text" id="genero" name="genero" required />
+              <label for="precio">Precio:</label>
+              <input type="number" step="0.01" id="precio" name="precio" required />
+              <label for="duracion">Duración:</label>
+              <input type="time" id="duracion" name="duracion" required />
+              <label for="lanzamiento">Lanzamiento:</label>
+              <input type="date" id="lanzamiento" name="lanzamiento" required />
+            </fieldset>
+            <input type="submit" value="Actualizar" />
+          </form>

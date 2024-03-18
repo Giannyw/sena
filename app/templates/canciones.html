@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/listas.css') }}">
+    <link rel="stylesheet" href="/app/stactic/css/listas.css">
+
+    <title>Lista canciones</title>
+</head>
+<body>
+
+   
+
+    <div class="container">
+        <h1>Bienvenido, {{session['nombre']}}</h1>
+        <p>Inicio de sesion correctamente</p>
+        <a href="/logout">Cerrar sesion</a>
+        
+
+    <table>
+        <tr>
+            <th>Codigo</th>
+            <th>Titulo</th>
+            <th>Artista</th>
+            <th>Genero</th>
+            <th>Precio</th>
+            <th>Duración</th>
+            <th>Lanzamiento</th>
+        </tr>
+            <tbody>
+                {% for id_canciones in id_canciones %}
+            <tr>
+                <td>{{id_canciones[0]}}</td>
+                <td>{{id_canciones[1]}}</td>
+                <td>{{id_canciones[2]}}</td>
+                <td>{{id_canciones[3]}}</td>
+                <td>{{id_canciones[4]}}</td>
+                <td>{{id_canciones[5]}}</td>
+                <td>{{id_canciones[6]}}</td>
+                <td>
+                    <a href="{{ url_for('editar_canciones', id=usuario[0])}}">Actualizar</a>
+                    <a href="{{ url_for('eliminar_canciones', id=usuario[0]) }}">Eliminar</a>
+                </td>
+            </tr>
+                {% endfor %}
+            </tbody>
+        
+    </table>
+    
+    </div>
+</body>
+</html>

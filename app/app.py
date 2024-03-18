@@ -54,6 +54,54 @@ def registrar_usuario():
        return redirect(url_for('login'))  # Redirigir a la página principal
     return render_template("Registrar.html")
 
+
+@app.route('/Registro', methods=['GET', 'POST'])
+def registro_usuario():
+    if request.method == 'POST':
+       Nombres = request.form.get('nombreusu')
+       Apellidos = request.form.get('apellidousu')
+       email = request.form.get('emailusu')
+       Direccion = request.form.get('direccionusu')
+       Telefono = request.form.get('telefonousu')
+       Usuario = request.form.get('emailusu')
+       Contraseña = request.form.get('contraseña')
+       
+       Passwordencrip= generate_password_hash(Contraseña)
+    
+        # Insertar datos a la tabla de mysql
+       cursor.execute("INSERT INTO usuarios(id_usu, nombreusu, apellidousu, emailusu, dirusu, telusu, usuario, contraseña) VALUES (%s, %s, %s, %s, %s, %s, %s)", (Nombres, Apellidos, email, Direccion, Telefono, Usuario, Passwordencrip))
+       db.commit()
+
+            
+       return redirect(url_for('login'))  # Redirigir a la página principal
+    return render_template("Registro.html")
+
+
+@app.route('/actcanciones', methods=['GET', 'POST'])
+def registrar_usuario():
+    if request.method == 'POST':
+       Codigo = request.form.get('id_canciones')
+       Titulo = request.form.get('titulo')
+       Artista = request.form.get('artista')
+       Genero = request.form.get('genero')
+       Precio = request.form.get('precio')
+       Duración = request.form.get('duracion')
+       Lanzamiento = request.form.get('lanzamiento')
+    
+        # Insertar datos a la tabla de mysql
+       cursor.execute("INSERT INTO canciones(id_canciones, titulo, artista, genero, precio, duracion, lanzamiento) VALUES (%s, %s, %s, %s, %s, %s, %s)", (Codigo, Titulo, Artista, Genero, Precio, Duración, Lanzamiento))
+       db.commit()
+
+      else: 
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM canciones WHERE polper=%s" ,(id,))
+        data = cursor.fetchall()
+
+        return render_template('actcanciones.html', personas=data[0])
+
+
+
+
 @app.route('/Ingresar', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
