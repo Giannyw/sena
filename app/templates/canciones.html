@@ -29,18 +29,19 @@
             <th>Lanzamiento</th>
         </tr>
             <tbody>
-                {% for id_canciones in id_canciones %}
+                {% for canciones in canciones %}
             <tr>
-                <td>{{id_canciones[0]}}</td>
-                <td>{{id_canciones[1]}}</td>
-                <td>{{id_canciones[2]}}</td>
-                <td>{{id_canciones[3]}}</td>
-                <td>{{id_canciones[4]}}</td>
-                <td>{{id_canciones[5]}}</td>
-                <td>{{id_canciones[6]}}</td>
+                <td>{{canciones[0]}}</td>
+                <td>{{canciones[1]}}</td>
+                <td>{{canciones[2]}}</td>
+                <td>{{canciones[3]}}</td>
+                <td>{{canciones[4]}}</td>
+                <td>{{canciones[5]}}</td>
+                <td>{{canciones[6]}}</td>
                 <td>
+                    <a href="{{ url_for('agregar_canciones', id=usuario[0]) }}">Agregar</a>
                     <a href="{{ url_for('editar_canciones', id=usuario[0])}}">Actualizar</a>
-                    <a href="{{ url_for('eliminar_canciones', id=usuario[0]) }}">Eliminar</a>
+                    <a href="{{ url_for('eliminar_canciones', id=usuario[0]) }}">Eliminar</a>                 
                 </td>
             </tr>
                 {% endfor %}

@@ -43,42 +43,24 @@ def registrar_usuario():
        Telefono = request.form.get('telefono')
        Usuario = request.form.get('usuario')
        Password = request.form.get('password')
+       Roles = request.form.get('txtrol')
        
        Passwordencrip= generate_password_hash(Password)
     
         # Insertar datos a la tabla de mysql
-       cursor.execute("INSERT INTO personas(nombrep, apellidop, emailp, dirp, telp, usup, passp) VALUES (%s, %s, %s, %s, %s, %s, %s)", (Nombres, Apellidos, email, Direccion, Telefono, Usuario, Passwordencrip))
+       cursor.execute("INSERT INTO personas(nombrep, apellidop, emailp, dirp, telp, usup, passp, roles) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (Nombres, Apellidos, email, Direccion, Telefono, Usuario, Passwordencrip,Roles))
        db.commit()
 
-            
+       print ("Usuario no registrado")     
        return redirect(url_for('login'))  # Redirigir a la página principal
+   
     return render_template("Registrar.html")
 
 
-@app.route('/Registro', methods=['GET', 'POST'])
-def registro_usuario():
-    if request.method == 'POST':
-       Nombres = request.form.get('nombreusu')
-       Apellidos = request.form.get('apellidousu')
-       email = request.form.get('emailusu')
-       Direccion = request.form.get('direccionusu')
-       Telefono = request.form.get('telefonousu')
-       Usuario = request.form.get('emailusu')
-       Contraseña = request.form.get('contraseña')
-       
-       Passwordencrip= generate_password_hash(Contraseña)
-    
-        # Insertar datos a la tabla de mysql
-       cursor.execute("INSERT INTO usuarios(id_usu, nombreusu, apellidousu, emailusu, dirusu, telusu, usuario, contraseña) VALUES (%s, %s, %s, %s, %s, %s, %s)", (Nombres, Apellidos, email, Direccion, Telefono, Usuario, Passwordencrip))
-       db.commit()
-
-            
-       return redirect(url_for('login'))  # Redirigir a la página principal
-    return render_template("Registro.html")
 
 
-@app.route('/actcanciones', methods=['GET', 'POST'])
-def registrar_usuario():
+@app.route('/actualizar/<int:id>', methods=['GET', 'POST'])
+def actualizar_canciones():
     if request.method == 'POST':
        Codigo = request.form.get('id_canciones')
        Titulo = request.form.get('titulo')
@@ -89,15 +71,45 @@ def registrar_usuario():
        Lanzamiento = request.form.get('lanzamiento')
     
         # Insertar datos a la tabla de mysql
-       cursor.execute("INSERT INTO canciones(id_canciones, titulo, artista, genero, precio, duracion, lanzamiento) VALUES (%s, %s, %s, %s, %s, %s, %s)", (Codigo, Titulo, Artista, Genero, Precio, Duración, Lanzamiento))
+       sql= "UPDATE canciones set titulo=%s,codigo=%s,artista=%s,genenero=%s,precio=%s,duracion=%s,lanzamiento=%s"
+       cursor.execute(sql,(Titulo,Codigo,Artista,Genero,Precio,Duración,Lanzamiento))
        db.commit()
 
-      else: 
+    else: 
         cursor = db.cursor()
         cursor.execute("SELECT * FROM canciones WHERE polper=%s" ,(id,))
         data = cursor.fetchall()
 
-        return render_template('actcanciones.html', personas=data[0])
+    return render_template('actcanciones.html', personas=data[0])
+
+
+@app.route('/Canciones')  # Crear ruta
+def mostrar_canciones():
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM canciones")
+    usuario = cursor.fetchall()
+       
+    return render_template('index.html', usuario=usuario)
+
+@app.route('/canciones', methods=['GET', 'POST'])
+def registro_canciones():
+    if request.method == 'POST':
+       Titulo = request.form.get('titulo')
+       Artista = request.form.get('artista')
+       Genero = request.form.get('genero')
+       Precio = request.form.get('precio')
+       Duración = request.form.get('duracion')
+       Lanzamiento = request.form.get('lanzamiento')
+       Imagen= request.form.get('img')
+       
+
+        # Insertar datos a la tabla de mysql
+       cursor.execute("INSERT INTO canciones(id_canciones,titulo,artista,genero,precio,duracion,lanzamiento,img) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (Titulo,Artista,Genero,Precio,Duración,Lanzamiento,Imagen))
+       db.commit()
+
+            
+       return redirect(url_for('login'))  # Redirigir a la página principal
+    return render_template("Registro.html")
 
 
 
@@ -109,20 +121,29 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
         
-        cursor = db.cursor()
-        cursor.execute("SELECT usup, passp from personas WHERE usup= %s", (username,))
+        cursor = db.cursor(dictionary=True)
+        sql="SELECT usup, passp, roles from personas WHERE usup= %s"
+        cursor.execute(sql,(username,))
         resultado = cursor.fetchone()
         
-        if resultado: 
-            if check_password_hash(resultado[1], password): 
-                session['usuario'] = username
-                return redirect(url_for('lista'))
-            else:
-                error = 'Credenciales invalidas. Por favor intente de nuevo'
-                return render_template('Ingresar.html', error=error)
+        if resultado and check_password_hash(resultado['passp'], password): 
+                session['usuario'] = resultado['usup']
+                session['rol']= resultado['roles']
+                
+                #de acuerdo al rol asignamnos las url 
+                if resultado['roles'] == 'administrador':
+                    return redirect(url_for('lista'))
+                else:  
+            
+                    return redirect(url_for('mostrar_canciones'))
+        
         else:
-            error = 'Usuario no encontrado'
-            return render_template('Ingresar.html', error=error)
+            print ('Credenciales invalidas. Por favor intente de nuevo')
+            return render_template('Ingresar.html')
+    else:
+        print('Usuario no encontrado') 
+        return render_template('Ingresar.html')
+
     return render_template('Ingresar.html')
 
 @app.route('/logout')
