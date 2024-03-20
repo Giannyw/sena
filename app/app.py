@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
+import base64
 
 # Crear instancia
 app = Flask(__name__)
@@ -59,39 +60,58 @@ def registrar_usuario():
 
 
 
-@app.route('/actualizar/<int:id>', methods=['GET', 'POST'])
+@app.route('/actualizar>', methods=['GET', 'POST'])
 def actualizar_canciones():
     if request.method == 'POST':
-       Codigo = request.form.get('id_canciones')
        Titulo = request.form.get('titulo')
        Artista = request.form.get('artista')
        Genero = request.form.get('genero')
        Precio = request.form.get('precio')
        Duración = request.form.get('duracion')
        Lanzamiento = request.form.get('lanzamiento')
+       
     
         # Insertar datos a la tabla de mysql
        sql= "UPDATE canciones set titulo=%s,codigo=%s,artista=%s,genenero=%s,precio=%s,duracion=%s,lanzamiento=%s"
-       cursor.execute(sql,(Titulo,Codigo,Artista,Genero,Precio,Duración,Lanzamiento))
+       cursor.execute(sql,(Titulo,Artista,Genero,Precio,Duración,Lanzamiento))
        db.commit()
-
+        
     else: 
         cursor = db.cursor()
         cursor.execute("SELECT * FROM canciones WHERE polper=%s" ,(id,))
         data = cursor.fetchall()
-
+    print('Error al registrar la cancion:', )
     return render_template('actcanciones.html', personas=data[0])
 
 
 @app.route('/Canciones')  # Crear ruta
 def mostrar_canciones():
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM canciones")
-    usuario = cursor.fetchall()
+    cursor.execute("SELECT titulo,artista,genero,precio,duracion,lanzamiento,img FROM canciones")
+    canciones = cursor.fetchall()
+    if canciones:
+    #crear lista para almacenar canciones
+         
+            cancioneslist = []
+            for cancion in canciones:
+                  #convertir la imagen formato base64
+                imagen = base64.b64encode(cancion[6]).decode('utf-8')
+            #agg los datos de la cancion a la lista
+                cancioneslist.append({
+                        'titulo': cancion[0],
+                        'artista': cancion[1],
+                        'genero': cancion[2],
+                        'precio': cancion[3],
+                        'duracion':cancion[4],
+                        'lanzamiento':cancion[5],
+                        'img':imagen                
+                        })
        
-    return render_template('index.html', usuario=usuario)
+            return render_template('canciones.html', canciones=cancioneslist)
+    else: 
+        return print("canciones no encontradas")
 
-@app.route('/canciones', methods=['GET', 'POST'])
+@app.route('/aggcanciones', methods=['GET', 'POST'])
 def registro_canciones():
     if request.method == 'POST':
        Titulo = request.form.get('titulo')
@@ -100,16 +120,16 @@ def registro_canciones():
        Precio = request.form.get('precio')
        Duración = request.form.get('duracion')
        Lanzamiento = request.form.get('lanzamiento')
-       Imagen= request.form.get('img')
-       
+       imagen = request.files['img']#imagen del formulario
+       imagenblob = imagen.read()#leer datos de la imagen
 
         # Insertar datos a la tabla de mysql
-       cursor.execute("INSERT INTO canciones(id_canciones,titulo,artista,genero,precio,duracion,lanzamiento,img) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (Titulo,Artista,Genero,Precio,Duración,Lanzamiento,Imagen))
+       cursor.execute("INSERT INTO canciones(titulo,artista,genero,precio,duracion,lanzamiento,img) VALUES (%s, %s, %s, %s, %s, %s, %s)",(Titulo,Artista,Genero,Precio,Duración,Lanzamiento,imagenblob))
        db.commit()
 
             
-       return redirect(url_for('login'))  # Redirigir a la página principal
-    return render_template("Registro.html")
+       return redirect(url_for('Canciones'))  # Redirigir a la página principal
+    return render_template("aggcanciones.html")
 
 
 
@@ -135,7 +155,7 @@ def login():
                     return redirect(url_for('lista'))
                 else:  
             
-                    return redirect(url_for('mostrar_canciones'))
+                    return redirect(url_for('Canciones'))
         
         else:
             print ('Credenciales invalidas. Por favor intente de nuevo')

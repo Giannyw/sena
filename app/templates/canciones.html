@@ -3,52 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/listas.css') }}">
-    <link rel="stylesheet" href="/app/stactic/css/listas.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/listcan.css') }}">
 
     <title>Lista canciones</title>
 </head>
 <body>
-
-   
 
     <div class="container">
         <h1>Bienvenido, {{session['nombre']}}</h1>
         <p>Inicio de sesion correctamente</p>
         <a href="/logout">Cerrar sesion</a>
         
-
-    <table>
-        <tr>
-            <th>Codigo</th>
-            <th>Titulo</th>
-            <th>Artista</th>
-            <th>Genero</th>
-            <th>Precio</th>
-            <th>Duración</th>
-            <th>Lanzamiento</th>
-        </tr>
-            <tbody>
-                {% for canciones in canciones %}
+        <table>
             <tr>
-                <td>{{canciones[0]}}</td>
-                <td>{{canciones[1]}}</td>
-                <td>{{canciones[2]}}</td>
-                <td>{{canciones[3]}}</td>
-                <td>{{canciones[4]}}</td>
-                <td>{{canciones[5]}}</td>
-                <td>{{canciones[6]}}</td>
-                <td>
-                    <a href="{{ url_for('agregar_canciones', id=usuario[0]) }}">Agregar</a>
-                    <a href="{{ url_for('editar_canciones', id=usuario[0])}}">Actualizar</a>
-                    <a href="{{ url_for('eliminar_canciones', id=usuario[0]) }}">Eliminar</a>                 
-                </td>
+                <th>Imagen</th>
+                <th>Titulo</th>
+                <th>Artista</th>
+                <th>Genero</th>
+                <th>Precio</th>
+                <th>Duración</th>
+                <th>Lanzamiento</th>
             </tr>
+            <tbody>
+                {% for cancion in canciones %}
+                <tr>
+                   <td><img src="data.image/jpeg;base64,{{cancion.img}}" lat="no sale Imagen" width="100"></td>
+                   <td>{{ cancion.titulo}}</td>
+                   <td>{{ cancion.artista}}</td>
+                   <td>{{ cancion.genero}}</td>
+                   <td>{{ cancion.precio}}</td>
+                   <td>{{ cancion.duracion}}</td>
+                   <td>{{ cancion.lanzamiento}}</td>
+
+                </tr>
                 {% endfor %}
+                
             </tbody>
-        
-    </table>
-    
+        </table>
     </div>
 </body>
 </html>

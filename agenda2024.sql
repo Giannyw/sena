@@ -54,7 +54,8 @@ CREATE TABLE `compras` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
-
+use agenda2024;
+select*from personas;
 --
 -- Estructura de tabla para la tabla `personas`
 --
@@ -68,8 +69,10 @@ CREATE TABLE `personas` (
   `telp` varchar(12) NOT NULL,
   `usup` varchar(60) NOT NULL,
   `passp` varchar(255) NOT NULL
+  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+ALTER TABLE personas ADD roles varchar(25) NOT NULL;
 --
 -- Volcado de datos para la tabla `personas`
 --
