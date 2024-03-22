@@ -35,6 +35,10 @@
                    <td>{{ cancion.duracion}}</td>
                    <td>{{ cancion.lanzamiento}}</td>
 
+                   <td>
+                    <a href="{{ url_for('actualizar_canciones', idcanciones=cancion.id_canciones)}}">Editar</a>
+                </td>
+
                 </tr>
                 {% endfor %}
                 

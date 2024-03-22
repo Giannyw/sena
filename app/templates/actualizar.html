@@ -3,27 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/actcanciones.css')}}">
-    <title>Actualizacion canciones</title>
+    <link rel= "stylesheet" href="{{ url_for('static', filename='css/actcanciones.css') }}">
+    <title>Actualizar Canciones</title>
 </head>
 <body>
-<h1>Canciones</h1>
-        
-        <form class="act">
+   <h1>Editar Canciones</h1>
+   <div class="form-group">
+   <form method="POST" action="">
+    <label>Codigo:</label>
+    <input type="number" name="idcancion" value="{{canciones[0]}}" disabled> <br>
+    
+    <label>Titulo:</label>
+    <input type="text" name="titulo" value="{{canciones[1]}}"> <br>
 
-            <fieldset>
-              <label for="titulo">Título:</label>
-              <input type="text" id="titulo" name="titulo" required />
-              <label for="artista">Artista:</label>
-              <input type="text" id="artista" name="artista" required />
-              <label for="genero">Genero:</label>
-              <input type="text" id="genero" name="genero" required />
-              <label for="precio">Precio:</label>
-              <input type="number" step="0.01" id="precio" name="precio" required />
-              <label for="duracion">Duración:</label>
-              <input type="time" id="duracion" name="duracion" required />
-              <label for="lanzamiento">Lanzamiento:</label>
-              <input type="date" id="lanzamiento" name="lanzamiento" required />
-            </fieldset>
-            <input type="submit" value="Actualizar" />
-          </form>
+    <label>Artista:</label>
+    <input type="text" name="artista" value="{{canciones[2]}}"> <br>
+
+    <label>Genero:</label>
+    <input type="email" name="genero" value="{{canciones[3]}}"> <br>
+
+    <label>Precio:</label>
+    <input type="number" name="precio" value="{{canciones[4]}}"> <br>
+
+    <label>Duracion:</label>
+    <input type="time" name="duracion" value="{{canciones[5]}}"> <br>
+
+    <label>Lanzamiento:</label>
+    <input type="date" name="usuper" value="{{canciones[6]}}"> <br>
+
+</form>
+</div>
+</body>
+</html>

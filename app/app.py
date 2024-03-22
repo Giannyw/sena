@@ -60,34 +60,36 @@ def registrar_usuario():
 
 
 
-@app.route('/actualizar>', methods=['GET', 'POST'])
-def actualizar_canciones():
+@app.route('/Actualizar/<int:id>',methods=['GET', 'POST'])
+def actualizar_canciones(idcanciones):
     if request.method == 'POST':
-       Titulo = request.form.get('titulo')
-       Artista = request.form.get('artista')
-       Genero = request.form.get('genero')
-       Precio = request.form.get('precio')
-       Duración = request.form.get('duracion')
-       Lanzamiento = request.form.get('lanzamiento')
+       titulo = request.form.get('titulo')
+       artista = request.form.get('artista')
+       genero = request.form.get('genero')
+       precio = request.form.get('precio')
+       duración = request.form.get('duracion')
+       lanzamiento = request.form.get('lanzamiento')
+       imagen = request.files['img']#imagen del formulario
+       imagenblob = imagen.read()#leer datos de la imagen
        
     
         # Insertar datos a la tabla de mysql
-       sql= "UPDATE canciones set titulo=%s,codigo=%s,artista=%s,genenero=%s,precio=%s,duracion=%s,lanzamiento=%s"
-       cursor.execute(sql,(Titulo,Artista,Genero,Precio,Duración,Lanzamiento))
+       sql= "UPDATE canciones SET titulo=%s,artista=%s,genenero=%s,precio=%s,duracion=%s,lanzamiento=%s WHERE idcanciones=%s"
+       cursor.execute(sql,(titulo,artista,genero,precio,duración,lanzamiento, imagenblob,idcanciones,))
        db.commit()
         
     else: 
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM canciones WHERE polper=%s" ,(id,))
+        cursor.execute("SELECT * FROM canciones WHERE idcanciones=%s" ,(idcanciones,))
         data = cursor.fetchall()
     print('Error al registrar la cancion:', )
-    return render_template('actcanciones.html', personas=data[0])
+    return render_template('actualizar.html', canciones=data[0])
 
 
 @app.route('/Canciones')  # Crear ruta
 def mostrar_canciones():
     cursor = db.cursor()
-    cursor.execute("SELECT titulo,artista,genero,precio,duracion,lanzamiento,img FROM canciones")
+    cursor.execute("SELECT id_canciones,titulo,artista,genero,precio,duracion,lanzamiento,img FROM canciones")
     canciones = cursor.fetchall()
     if canciones:
     #crear lista para almacenar canciones
@@ -95,15 +97,16 @@ def mostrar_canciones():
             cancioneslist = []
             for cancion in canciones:
                   #convertir la imagen formato base64
-                imagen = base64.b64encode(cancion[6]).decode('utf-8')
+                imagen = base64.b64encode(cancion[7]).decode('utf-8')
             #agg los datos de la cancion a la lista
                 cancioneslist.append({
-                        'titulo': cancion[0],
-                        'artista': cancion[1],
-                        'genero': cancion[2],
-                        'precio': cancion[3],
-                        'duracion':cancion[4],
-                        'lanzamiento':cancion[5],
+                        'id_canciones': cancion[0],
+                        'titulo': cancion[1],
+                        'artista': cancion[2],
+                        'genero': cancion[3],
+                        'precio': cancion[4],
+                        'duracion':cancion[5],
+                        'lanzamiento':cancion[6],
                         'img':imagen                
                         })
        
